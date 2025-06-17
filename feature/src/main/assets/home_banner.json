@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "imageUrl": "https://dummyimage.com/600x240/ff7f7f/ffffff&text=배너1",
+    "title": "배너1"
+  },
+  {
+    "id": 2,
+    "imageUrl": "https://dummyimage.com/600x240/ffbf7f/ffffff&text=배너2",
+    "title": "배너2"
+  },
+  {
+    "id": 3,
+    "imageUrl": "https://dummyimage.com/600x240/ffff7f/000000&text=배너3",
+    "title": "배너3"
+  }
+]

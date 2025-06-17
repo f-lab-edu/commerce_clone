@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "imageUrl": "https://dummyimage.com/140x140/ffd1dc/000000&text=수분크림",
+    "name": "촉촉한 수분크림",
+    "originPrice": "19,800원",
+    "discountedPrice": "17,800원",
+    "discountPercent": "10%",
+    "rating": "4.8"
+  },
+  {
+    "id": 2,
+    "imageUrl": "https://dummyimage.com/140x140/ffe0b2/000000&text=클렌징폼",
+    "name": "산뜻한 클렌징폼",
+    "originPrice": "13,400원",
+    "discountedPrice": "10,000원",
+    "discountPercent": "25%",
+    "rating": "4.7"
+  },
+  {
+    "id": 3,
+    "imageUrl": "https://dummyimage.com/140x140/ccffcc/000000&text=선크림",
+    "name": "가볍고 산뜻한 선크림",
+    "originPrice": "21,000원",
+    "discountedPrice": "14,700원",
+    "discountPercent": "30%",
+    "rating": "4.6"
+  },
+  {
+    "id": 4,
+    "imageUrl": "https://dummyimage.com/140x140/cceeff/000000&text=마스크팩",
+    "name": "진정 마스크팩 10매",
+    "originPrice": "15,000원",
+    "discountedPrice": "9,900원",
+    "discountPercent": "34%",
+    "rating": "4.9"
+  },
+  {
+    "id": 5,
+    "imageUrl": "https://dummyimage.com/140x140/ffccff/000000&text=샴푸",
+    "name": "손상모 전용 샴푸",
+    "originPrice": "23,000원",
+    "discountedPrice": "18,400원",
+    "discountPercent": "20%",
+    "rating": "4.5"
+  },
+  {
+    "id": 6,
+    "imageUrl": "https://dummyimage.com/140x140/f0f0f0/000000&text=바디워시",
+    "name": "촉촉한 바디워시",
+    "originPrice": "12,000원",
+    "discountedPrice": "9,600원",
+    "discountPercent": "20%",
+    "rating": "4.4"
+  },
+  {
+    "id": 7,
+    "imageUrl": "https://dummyimage.com/140x140/d1c4e9/000000&text=쿠션",
+    "name": "커버력 좋은 쿠션",
+    "originPrice": "32,000원",
+    "discountedPrice": "22,400원",
+    "discountPercent": "30%",
+    "rating": "4.7"
+  },
+  {
+    "id": 8,
+    "imageUrl": "https://dummyimage.com/140x140/b3e5fc/000000&text=립밤",
+    "name": "보습 립밤",
+    "originPrice": "8,000원",
+    "discountedPrice": "6,400원",
+    "discountPercent": "20%",
+    "rating": "4.3"
+  },
+  {
+    "id": 9,
+    "imageUrl": "https://dummyimage.com/140x140/c8e6c9/000000&text=미스트",
+    "name": "수분 미스트",
+    "originPrice": "16,000원",
+    "discountedPrice": "12,800원",
+    "discountPercent": "20%",
+    "rating": "4.6"
+  },
+  {
+    "id": 10,
+    "imageUrl": "https://dummyimage.com/140x140/ffcdd2/000000&text=핸드크림",
+    "name": "향기로운 핸드크림",
+    "originPrice": "9,500원",
+    "discountedPrice": "7,600원",
+    "discountPercent": "20%",
+    "rating": "4.5"
+  }
+]

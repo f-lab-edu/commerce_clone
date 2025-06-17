@@ -52,7 +52,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13" // compose bom 기준
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
 
     sourceSets["main"].java.srcDirs("src/main/java", "src/main/kotlin")

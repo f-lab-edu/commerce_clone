@@ -48,7 +48,7 @@ android {
         correctErrorTypes = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13" // compose bom 기준
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
 }
 
@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.hilt.core)
 
     kapt(libs.hilt.compiler)
+    kapt(libs.androidx.room.compiler)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.convert.gson)
@@ -83,7 +84,8 @@ dependencies {
     implementation(libs.okhttp.logging)
 
     implementation(libs.coil)
-    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.datastore)
 
     testImplementation(libs.junit)
