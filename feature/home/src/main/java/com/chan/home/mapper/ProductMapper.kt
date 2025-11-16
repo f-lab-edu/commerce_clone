@@ -30,7 +30,7 @@ fun ProductsVO.toProductsModel(): ProductsModel {
         productId = productId,
         productName = productName,
         brandName = brandName,
-        imageUrl = "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0016/A00000016559829ko.jpg?l=ko",
+        imageUrl = getRandomImageUrl(productId),
         originalPrice = NumberFormat.getNumberInstance(Locale.KOREA).format(originalPrice) + "원",
         discountPrice = NumberFormat.getNumberInstance(Locale.KOREA).format(discountPrice) + "원",
         discountPercent = "${discountPercent}%",
@@ -54,7 +54,7 @@ fun ProductVO.toSaleProductModel(): HomeSaleProductModel {
         productId = productId,
         productName = productName,
         brandName = brandName,
-        imageUrl = "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0016/A00000016134526ko.jpg?l=ko",
+        imageUrl = getRandomImageUrl(productId),
         originalPrice = NumberFormat.getNumberInstance(Locale.KOREA).format(originalPrice) + "원",
         discountPrice = NumberFormat.getNumberInstance(Locale.KOREA).format(discountPrice) + "원",
         discountPercent = "${discountPercent}%",
@@ -62,4 +62,8 @@ fun ProductVO.toSaleProductModel(): HomeSaleProductModel {
         reviewRating = reviewRating.toString(),
         reviewCount = "(${NumberFormat.getNumberInstance(Locale.KOREA).format(reviewCount)})"
     )
+}
+
+private fun getRandomImageUrl(seed: String): String {
+    return "https://picsum.photos/seed/$seed/300/300"
 }
