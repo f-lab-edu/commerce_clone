@@ -1,6 +1,5 @@
 package com.chan.home.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.chan.android.ToastUtil
 import com.chan.home.composables.HomeScreen
 import com.chan.home.composables.home.banner.HomeBannerWebViewScreen
 import com.chan.home.home.HomeContract
@@ -62,18 +62,19 @@ fun HomeRoute(navController: NavHostController) {
         viewModel.setEvent(HomeContract.Event.SaleProducts)
     }
 
-    LaunchedEffect(viewModel.effect) {
+    LaunchedEffect(Unit) {
         viewModel.effect
             .filterIsInstance<HomeContract.Effect.Navigation>()
-            .collect { navEffect ->
-                when (navEffect) {
+            .collect { effect ->
+                ToastUtil.cancel()
+                when (effect) {
                     is HomeContract.Effect.Navigation.ToProductDetailRoute ->
                         navController.navigate(
-                            Routes.PRODUCT_DETAIL.productDetailRoute(navEffect.productId)
+                            Routes.PRODUCT_DETAIL.productDetailRoute(effect.productId)
                         )
 
                     is HomeContract.Effect.Navigation.ToCartPopupRoute ->
-                        navController.navigate(Routes.CART_POPUP.cartPopUpRoute(navEffect.productId))
+                        navController.navigate(Routes.CART_POPUP.cartPopUpRoute(effect.productId))
 
                     is HomeContract.Effect.Navigation.ToCartRoute ->
                         navController.navigate(Routes.CART.route)
@@ -83,18 +84,21 @@ fun HomeRoute(navController: NavHostController) {
 
                     is HomeContract.Effect.Navigation.ToWebView ->
                         navController.navigate(
-                            Routes.HOME_BANNER_WEB_VIEW.homeBannerWebViewRoute(navEffect.url)
+                            Routes.HOME_BANNER_WEB_VIEW.homeBannerWebViewRoute(effect.url)
                         )
+
+                    HomeContract.Effect.Navigation.ToNotification ->
+                        ToastUtil.show(context, "준비 중입니다.")
                 }
             }
     }
 
 
-    LaunchedEffect(viewModel.effect) {
+    LaunchedEffect(Unit) {
         viewModel.effect
             .filterIsInstance<HomeContract.Effect.ShowError>()
             .collect { error ->
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                ToastUtil.show(context, error.message)
             }
     }
 

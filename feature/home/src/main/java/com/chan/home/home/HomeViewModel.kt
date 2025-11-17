@@ -48,7 +48,6 @@ class HomeViewModel @Inject constructor(
 
     override fun handleEvent(event: HomeContract.Event) {
         when (event) {
-            HomeContract.Event.Retry -> loadBanners()
             HomeContract.Event.PopularItemLoad -> loadPopularProducts()
             HomeContract.Event.RankingCategoryTabsLoad -> loadRankingCategoryTabs()
             is HomeContract.Event.RankingTabClicked -> {
@@ -64,6 +63,7 @@ class HomeViewModel @Inject constructor(
             HomeContract.Event.HomeRankingEvent.RankingProductsLoad -> loadRankingProducts()
             HomeContract.Event.OnSearchClick -> setEffect { ToSearchRoute }
             is HomeContract.Event.Banner -> handleBannerEvent(event.event)
+            HomeContract.Event.NavigateToNotification -> setEffect { ToNotification }
         }
     }
 

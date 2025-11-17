@@ -50,7 +50,7 @@ fun HomeScreen(
         topBar = {
             Column {
                 MainTopBar(
-                    navigationIcon = null, // 홈 화면은 뒤로가기 없음
+                    navigationIcon = null,
                     titleContent = {
                         Text(
                             text = stringResource(R.string.main_title)
@@ -60,7 +60,7 @@ fun HomeScreen(
                         IconButton(onClick = { onEvent(HomeContract.Event.OnSearchClick) }) {
                             Icon(Icons.Default.Search, contentDescription = "검색")
                         }
-                        IconButton(onClick = { /* 알림 */ }) {
+                        IconButton(onClick = { onEvent(HomeContract.Event.NavigateToNotification) }) {
                             Icon(Icons.Default.Notifications, contentDescription = "알림")
                         }
                         IconButton(onClick = { onEvent(HomeContract.Event.OnCartClick) }) {

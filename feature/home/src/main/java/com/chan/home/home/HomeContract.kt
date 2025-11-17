@@ -16,7 +16,7 @@ class HomeContract {
         object PopularItemLoad : Event()
         object RankingCategoryTabsLoad : Event()
         object SaleProducts : Event()
-        object Retry : Event()
+        object NavigateToNotification: Event()
 
         data class RankingTabClicked(val index: Int) : Event()
         data class RankingTabSelected(val categoryId: String) : Event()
@@ -66,6 +66,7 @@ class HomeContract {
             data class ToCartPopupRoute(val productId: String) : Navigation()
             object ToCartRoute : Navigation()
             object ToSearchRoute : Navigation()
+            object ToNotification : Navigation()
             data class ToWebView(val url: String) : Navigation()
         }
     }
