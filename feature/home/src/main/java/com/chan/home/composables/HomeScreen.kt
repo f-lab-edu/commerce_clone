@@ -21,12 +21,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import com.chan.android.model.MainTopBarAction
+import com.chan.android.ui.composable.CommonTabBar
 import com.chan.android.ui.composable.MainTopBar
 import com.chan.android.ui.theme.White
 import com.chan.home.R
 import com.chan.home.composables.home.HomePage
-import com.chan.home.composables.home.HomeTopTab
 import com.chan.home.composables.ranking.HomeRankingScreen
 import com.chan.home.home.HomeContract
 import com.chan.home.model.HomeTabItem
@@ -70,7 +69,7 @@ fun HomeScreen(
                     scrollBehavior = scrollBehavior
                 )
 
-                HomeTopTab(
+                CommonTabBar(
                     tabs = state.topBars.map { stringResource(id = it.titleResId) },
                     selectedTabIndex = pagerState.currentPage,
                     onTabClick = { index ->
@@ -98,14 +97,11 @@ fun HomeScreen(
                         onEvent = onEvent
                     )
                 }
-
-                HomeTabItem.RecommendToday -> RecommendScreen()
                 HomeTabItem.Ranking -> HomeRankingScreen(
                     state = state,
                     onEvent = onEvent
                 )
 
-                else -> {}
             }
         }
     }
