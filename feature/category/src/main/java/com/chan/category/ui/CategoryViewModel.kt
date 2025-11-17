@@ -16,8 +16,8 @@ class CategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : BaseViewModel<CategoryContract.Event, CategoryContract.State, CategoryContract.Effect>() {
 
-    private var oliveYoungCategoriesCache: List<CategoriesModel>? = null
-    private var oliveYoungHeaderPositionsCache: List<Pair<Int, String>>? = null
+    private var categoriesCache: List<CategoriesModel>? = null
+    private var headerPositionsCache: List<Pair<Int, String>>? = null
 
 
     override fun setInitialState() = CategoryContract.State()
@@ -54,11 +54,11 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun getAllCategories() {
-        oliveYoungCategoriesCache?.let { cachedCategories ->
+        categoriesCache?.let { cachedCategories ->
             setState {
                 copy(
                     categories = cachedCategories,
-                    headerPositions = oliveYoungHeaderPositionsCache ?: emptyList(),
+                    headerPositions = headerPositionsCache ?: emptyList(),
                     selectedCategoryId = cachedCategories.firstOrNull()?.id
                 )
             }
@@ -70,8 +70,8 @@ class CategoryViewModel @Inject constructor(
             },
             onSuccess = { categories ->
                 val headerPositions = categoryHeaderMapping(categories)
-                oliveYoungCategoriesCache = categories
-                oliveYoungHeaderPositionsCache = headerPositions
+                categoriesCache = categories
+                headerPositionsCache = headerPositions
                 copy(
                     categories = categories,
                     selectedCategoryId = categories.firstOrNull()?.id,

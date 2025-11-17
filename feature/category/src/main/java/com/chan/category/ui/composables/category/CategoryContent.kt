@@ -33,7 +33,7 @@ fun CategoryContent(
 ) {
     LazyColumn(
         state = state,
-        contentPadding = PaddingValues(bottom = 700.dp),
+        contentPadding = PaddingValues(bottom = 150.dp),
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
