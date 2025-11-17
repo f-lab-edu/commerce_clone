@@ -99,7 +99,7 @@ fun CategoryScreen(
             }
     }
 
-    val topTabs = remember { listOf("올리브영", "헬스+", "Luxe Edit") }
+    val topTabs = remember { listOf("항목", "헬스+", "Luxe Edit") }
 
     val topBarColors = when (state.selectedTabIndex) {
         1 -> TopAppBarDefaults.topAppBarColors(containerColor = MainColor)
