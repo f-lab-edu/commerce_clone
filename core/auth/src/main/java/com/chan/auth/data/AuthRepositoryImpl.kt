@@ -3,7 +3,6 @@ package com.chan.auth.data
 import android.content.SharedPreferences
 import com.chan.auth.domain.AuthRepository
 import com.chan.auth.domain.UserSession
-import com.chan.database.datastore.CartDataStoreManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
