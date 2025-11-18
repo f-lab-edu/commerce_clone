@@ -13,7 +13,8 @@ enum class Routes(val route: String) {
     LOGIN("login"),
     SEARCH("search"),
     CART("cart"),
-    CART_POPUP("cart/{productId}");
+    CART_POPUP("cart/{productId}"),
+    Like("like");
 
     fun homeBannerWebViewRoute(url: String) =
         "homeBannerWebView/${Uri.encode(url)}"
