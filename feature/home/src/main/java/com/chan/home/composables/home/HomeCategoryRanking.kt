@@ -84,9 +84,10 @@ fun HomeCategoryRanking(
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                state.rankingCategories.forEach {
+                state.rankingCategories.forEach { product ->
                     CommonProductsCard(
-                        product = it,
+                        product = product,
+                        isLiked = product.productId in state.likedProductIds,
                         modifier = Modifier.fillMaxWidth(),
                         orientation = ProductCardOrientation.HORIZONTAL,
                         showLikeButton = true,
@@ -94,7 +95,8 @@ fun HomeCategoryRanking(
                         onClick = { productId ->
                             onEvent(HomeContract.Event.OnProductClicked(productId = productId))
                         },
-                        onLikeClick = {
+                        onLikeClick = { productId ->
+                            onEvent(HomeContract.Event.ToggleFavorite(productId = productId))
                         },
                         onCartClick = { productId ->
                             onEvent(HomeContract.Event.OnAddToCartClick(productId = productId))
