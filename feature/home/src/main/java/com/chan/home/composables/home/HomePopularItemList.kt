@@ -20,10 +20,11 @@ import com.chan.android.ui.theme.Spacing
 import com.chan.android.ui.theme.appTypography
 import com.chan.android.ui.util.horizontalNestedScrollConnection
 import com.chan.home.R
+import com.chan.home.home.HomeContract
 
 @Composable
 fun HomePopularItemList(
-    product: List<ProductsModel>,
+    state: HomeContract.State,
     onProductClick: (productId: String) -> Unit,
     onLikeClick: (productId: String) -> Unit,
     onCartClick: (productId: String) -> Unit
@@ -46,17 +47,18 @@ fun HomePopularItemList(
         modifier = Modifier.nestedScroll(nestedScrollConnection)
     ) {
         items(
-            items = product,
+            items = state.popularProducts,
             key = { it.productId }
         ) { item ->
             CommonProductsCard(
                 product = item,
+                isLiked = item.productId in state.likedProductIds,
                 modifier = Modifier.width(productCardSize),
                 onClick = {
                     onProductClick(item.productId)
                 },
-                onLikeClick = {
-
+                onLikeClick = { productId ->
+                    onLikeClick(productId)
                 },
                 onCartClick = { productId ->
                     onCartClick(productId)

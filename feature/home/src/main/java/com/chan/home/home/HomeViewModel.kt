@@ -6,6 +6,8 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import com.chan.android.BaseViewModel
 import com.chan.android.model.ProductsModel
+import com.chan.domain.usecase.GetLikedProductIdsUseCase
+import com.chan.domain.usecase.ToggleLikeUseCase
 import com.chan.home.domain.HomeUseCases
 import com.chan.home.domain.usecase.RankingUseCase
 import com.chan.home.home.HomeContract.BannerEvent
@@ -33,7 +35,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeUseCases: HomeUseCases,
-    private val rankingUseCases: RankingUseCase
+    private val rankingUseCases: RankingUseCase,
+    private val toggleLikeUseCase: ToggleLikeUseCase,
+    private val getLikedProductIdsUseCase: GetLikedProductIdsUseCase,
 ) : BaseViewModel<HomeContract.Event, HomeContract.State, HomeContract.Effect>() {
 
     private val _rankingProducts = MutableStateFlow<Flow<PagingData<ProductsModel>>?>(null)
@@ -42,6 +46,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         loadHomeTopBar()
+        observeLikes()
     }
 
     override fun setInitialState() = HomeContract.State()
@@ -64,7 +69,26 @@ class HomeViewModel @Inject constructor(
             HomeContract.Event.OnSearchClick -> setEffect { ToSearchRoute }
             is HomeContract.Event.Banner -> handleBannerEvent(event.event)
             HomeContract.Event.NavigateToNotification -> setEffect { ToNotification }
+            is HomeContract.Event.ToggleFavorite -> toggleFavorite(event.productId)
         }
+    }
+
+    private fun observeLikes() {
+        viewModelScope.launch {
+            getLikedProductIdsUseCase.invoke()
+                .collect { ids ->
+                    setState { copy(likedProductIds = ids) }
+                }
+        }
+    }
+
+    private fun toggleFavorite(productId: String) {
+        handleRepositoryCall(
+            call = {
+                toggleLikeUseCase.invoke(productId)
+            },
+            onSuccess = { this }
+        )
     }
 
     private fun handleBannerEvent(event: BannerEvent) {
@@ -162,7 +186,7 @@ class HomeViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 setState { copy(isLoading = false, isError = true) }
-                setEffect { HomeContract.Effect.ShowError(e.message.toString()) }
+                setEffect { ShowError(e.message.toString()) }
             }
         }
     }

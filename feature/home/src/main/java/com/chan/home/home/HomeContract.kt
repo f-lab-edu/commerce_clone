@@ -25,6 +25,7 @@ class HomeContract {
         object OnCartClick : Event()
         data class OnAddToCartClick(val productId: String) : Event()
         object OnSearchClick : Event()
+        data class ToggleFavorite(val productId: String) : Event()
 
         sealed class HomeRankingEvent : Event() {
             object RankingProductsLoad : HomeRankingEvent()
@@ -46,6 +47,8 @@ class HomeContract {
         val rankingCategories: List<ProductsModel> = emptyList(),
         val saleProductList: List<HomeSaleProductModel> = emptyList(),
         val selectedRankingTabIndex: Int = 0,
+        val likedProductIds: Set<String> = emptySet(),
+        val likedProducts: List<ProductsModel> = emptyList(),
         val isLoading: Boolean = false,
         val isError: Boolean = false,
     ) : ViewState

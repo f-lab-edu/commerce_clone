@@ -29,12 +29,12 @@ fun HomePage(
         item {
             if (state.popularProducts.isNotEmpty()) {
                 HomePopularItemList(
-                    product = state.popularProducts,
+                    state = state,
                     onProductClick = { productId ->
                         onEvent(HomeContract.Event.OnProductClicked(productId = productId))
                     },
-                    onLikeClick = {
-
+                    onLikeClick = { productId ->
+                        onEvent(HomeContract.Event.ToggleFavorite(productId = productId))
                     }, onCartClick = { productId ->
                         onEvent(HomeContract.Event.OnAddToCartClick(productId = productId))
                     }
