@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,10 +15,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
@@ -51,6 +50,7 @@ import com.chan.android.ui.theme.Spacing
 @Composable
 fun CommonProductsCard(
     product: ProductsModel,
+    isLiked: Boolean = false,
     modifier: Modifier = Modifier.width(200.dp),
     orientation: ProductCardOrientation = ProductCardOrientation.VERTICAL,
     showLikeButton: Boolean = true,
@@ -124,8 +124,9 @@ fun CommonProductsCard(
                             onClick = { onLikeClick(product.productId) },
                         ) {
                             Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
+                                imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "like",
+                                tint = if (isLiked) Color.Red else Color.Gray,
                                 modifier = Modifier.size(Spacing.spacing4)
                             )
                         }
@@ -197,8 +198,9 @@ fun CommonProductsCard(
                     if (showLikeButton) {
                         IconButton(onClick = { onLikeClick(product.productId) }) {
                             Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
+                                imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "like",
+                                tint = if (isLiked) Color.Red else Color.Gray,
                                 modifier = Modifier.size(Spacing.spacing4)
                             )
                         }
