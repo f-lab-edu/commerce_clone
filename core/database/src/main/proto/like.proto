@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "com.chan.like.proto";
+option java_multiple_files = true;
+
+message Like {
+  repeated string product_ids = 1;
+}
