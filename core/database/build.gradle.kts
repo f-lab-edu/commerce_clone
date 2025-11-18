@@ -58,6 +58,7 @@ protobuf {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:auth"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)

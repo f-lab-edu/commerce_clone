@@ -33,6 +33,7 @@ paging = "3.3.6"
 firebaseBom = "33.3.0"
 googleServices = "4.4.1"
 arch-core-testing = "2.2.0"
+lifecycleViewmodelKtx = "2.6.2"
 
 
 [libraries]
@@ -89,6 +90,7 @@ androidx-security-crypto = { group = "androidx.security", name = "security-crypt
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "33.3.0" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

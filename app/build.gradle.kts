@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:mypage"))
     implementation(project(":feature:cart"))
+    implementation(project(":feature:like"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.ktx)
