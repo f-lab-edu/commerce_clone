@@ -61,6 +61,8 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":core:navigation"))
     implementation(project(":core:notification"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:auth"))
 
     implementation(project(":feature:home"))
     implementation(project(":feature:category"))
