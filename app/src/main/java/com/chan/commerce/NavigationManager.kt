@@ -17,7 +17,7 @@ class NavigationManager @Inject constructor(
         route: String,
         builder: NavOptionsBuilder.() -> Unit,
     ) {
-        val requiresLogin = route.substringBefore("?") in routesRequiringAuth
+        val requiresLogin = routesRequiringAuth.any { route.startsWith(it) }
         val loggedIn = checkSessionUseCase()
 
         if (requiresLogin && !loggedIn) {
