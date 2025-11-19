@@ -8,6 +8,7 @@ class MyPageContract {
 
     sealed class Event: ViewEvent {
         object OnLogoutClicked : Event()
+        object GetUserId: Event()
     }
 
     data class State(

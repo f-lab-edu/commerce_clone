@@ -36,6 +36,10 @@ fun MyPageRoute(navController: NavHostController) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        viewModel.setEvent(MyPageContract.Event.GetUserId)
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when(effect) {
                 MyPageContract.Effect.Navigation.ToHome -> {
