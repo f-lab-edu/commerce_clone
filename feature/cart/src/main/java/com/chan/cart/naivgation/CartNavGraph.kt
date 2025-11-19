@@ -16,15 +16,12 @@ import com.chan.cart.CartViewModel
 import com.chan.cart.ui.CartScreen
 import com.chan.cart.ui.popup.CartPopupScreen
 import com.chan.navigation.NavGraphProvider
-import com.chan.navigation.Routes
-import com.chan.navigation.createLoginRoute
-import kotlinx.coroutines.flow.filterIsInstance
 import javax.inject.Inject
 
 class CartNavGraph @Inject constructor() : NavGraphProvider {
     override fun addGraph(
         navGraphBuilder: NavGraphBuilder,
-        navController: NavHostController
+        navController: NavHostController,
     ) {
         navGraphBuilder.composable(CartDestination.route) { backStackEntry ->
             CartRoute(navController)
@@ -45,31 +42,10 @@ fun CartRoute(navController: NavHostController) {
     val viewModel: CartViewModel = hiltViewModel()
     val state by viewModel.viewState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.effect
-            .filterIsInstance<CartContract.Effect.Navigation>()
-            .collect { navigate ->
-                when (navigate) {
-                    CartContract.Effect.Navigation.ToLogin -> {
-                        navController.navigate(createLoginRoute(Routes.CART.route)) {
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                }
-            }
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.setEvent(CartContract.Event.CheckUserSession)
-    }
-
-    if (state.isSessionCheckCompleted) {
-        CartScreen(
-            state = state,
-            onEvent = viewModel::setEvent
-        )
-    }
+    CartScreen(
+        state = state,
+        onEvent = viewModel::setEvent
+    )
 }
 
 
@@ -94,24 +70,12 @@ fun CartPopupRoute(navController: NavHostController, productId: String) {
                     CartContract.Effect.DismissCartPopup -> {
                         navController.popBackStack()
                     }
-
-                    CartContract.Effect.Navigation.ToLogin -> {
-                        navController.navigate(createLoginRoute(Routes.HOME.route)) {
-                            popUpTo(Routes.CART.route) {
-                                inclusive = true
-                            }
-                        }
-                    }
                 }
             }
     }
 
     LaunchedEffect(key1 = productId) {
         viewModel.handleEvent(CartContract.Event.LoadPopupProductInfo(productId))
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.setEvent(CartContract.Event.CheckUserSession)
     }
 
     CartPopupScreen(

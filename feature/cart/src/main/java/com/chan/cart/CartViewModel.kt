@@ -3,11 +3,8 @@ package com.chan.cart
 import androidx.lifecycle.viewModelScope
 import com.chan.android.BaseViewModel
 import com.chan.android.LoadingState
-import com.chan.auth.domain.usecase.CheckSessionUseCase
-import com.chan.cart.CartContract.Effect.Navigation.ToLogin
 import com.chan.cart.domain.usecase.CartUseCases
 import com.chan.cart.model.CartInTobBarModel
-import com.chan.cart.model.DeliveryType
 import com.chan.cart.ui.mapper.toDataStoreCartInProductsModel
 import com.chan.cart.ui.mapper.toPopupProductInfoModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val checkSessionUseCase: CheckSessionUseCase,
-    private val cartUseCases: CartUseCases
+    private val cartUseCases: CartUseCases,
 ) : BaseViewModel<CartContract.Event, CartContract.State, CartContract.Effect>() {
 
     init {
@@ -46,20 +42,6 @@ class CartViewModel @Inject constructor(
 
             CartContract.Event.OnAllSelected -> updateAllSelected()
             is CartContract.Event.DeleteProduct -> deleteProduct(event.productId)
-            CartContract.Event.CheckUserSession -> checkSessionStatus()
-        }
-    }
-
-    private fun checkSessionStatus() {
-        viewModelScope.launch {
-            val currentSession = checkSessionUseCase.invoke()
-
-            if (currentSession) {
-                setState { copy(isSessionCheckCompleted = true) }
-                setEvent(CartContract.Event.LoadCartProducts)
-            } else {
-                setEffect { ToLogin }
-            }
         }
     }
 
@@ -164,7 +146,7 @@ class CartViewModel @Inject constructor(
     private fun <T> handleRepositoryCall(
         call: suspend () -> T,
         onSuccess: CartContract.State.(T) -> CartContract.State,
-        onFinally: suspend (T) -> Unit = {}
+        onFinally: suspend (T) -> Unit = {},
     ) {
         viewModelScope.launch {
             setState { copy(loadingState = LoadingState.Loading) }

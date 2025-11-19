@@ -15,7 +15,6 @@ class CartContract {
         data class SelectedTab(val index: Int) : Event()
         data class LoadPopupProductInfo(val productId: String) : Event()
         object LoadCartProducts : Event()
-        object CheckUserSession : Event()
         data class AddToProduct(val productId: String) : Event()
         data class UpdateProductSelected(val productId: String, val isSelected: Boolean) : Event()
         data class UpdateProductQuantity(val productId: String, val isAdd: Boolean) : Event()
@@ -39,9 +38,5 @@ class CartContract {
         data class ShowError(val errorMsg: String) : Effect()
         data class ShowToast(@StringRes val message: Int) : Effect()
         object DismissCartPopup : Effect()
-
-        sealed class Navigation : Effect() {
-            object ToLogin : Navigation()
-        }
     }
 }
