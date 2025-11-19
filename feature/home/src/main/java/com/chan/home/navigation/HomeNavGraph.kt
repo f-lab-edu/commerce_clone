@@ -17,17 +17,20 @@ import com.chan.home.composables.home.banner.HomeBannerWebViewScreen
 import com.chan.home.home.HomeContract
 import com.chan.home.home.HomeViewModel
 import com.chan.navigation.NavGraphProvider
+import com.chan.navigation.Navigator
 import com.chan.navigation.Routes
 import kotlinx.coroutines.flow.filterIsInstance
 import javax.inject.Inject
 
-class HomeNavGraph @Inject constructor() : NavGraphProvider {
+class HomeNavGraph @Inject constructor(
+    private val navigator: Navigator,
+) : NavGraphProvider {
     override fun addGraph(
         navGraphBuilder: NavGraphBuilder,
-        navController: NavHostController
+        navController: NavHostController,
     ) {
         navGraphBuilder.composable(HomeDestination.route) {
-            HomeRoute(navController)
+            HomeRoute(navigator, navController)
         }
 
         navGraphBuilder.composable(
@@ -50,7 +53,7 @@ class HomeNavGraph @Inject constructor() : NavGraphProvider {
 }
 
 @Composable
-fun HomeRoute(navController: NavHostController) {
+fun HomeRoute(navigator: Navigator, navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -69,22 +72,33 @@ fun HomeRoute(navController: NavHostController) {
                 ToastUtil.cancel()
                 when (effect) {
                     is HomeContract.Effect.Navigation.ToProductDetailRoute ->
-                        navController.navigate(
-                            Routes.PRODUCT_DETAIL.productDetailRoute(effect.productId)
+                        navigator.navigate(
+                            navController = navController,
+                            route = Routes.PRODUCT_DETAIL.productDetailRoute(effect.productId)
                         )
 
                     is HomeContract.Effect.Navigation.ToCartPopupRoute ->
-                        navController.navigate(Routes.CART_POPUP.cartPopUpRoute(effect.productId))
+                        navigator.navigate(
+                            navController = navController,
+                            route = Routes.CART_POPUP.cartPopUpRoute(effect.productId)
+                        )
 
                     is HomeContract.Effect.Navigation.ToCartRoute ->
-                        navController.navigate(Routes.CART.route)
+                        navigator.navigate(
+                            navController = navController,
+                            route = Routes.CART.route
+                        )
 
                     HomeContract.Effect.Navigation.ToSearchRoute ->
-                        navController.navigate(Routes.SEARCH.route)
+                        navigator.navigate(
+                            navController = navController,
+                            route = Routes.SEARCH.route
+                        )
 
                     is HomeContract.Effect.Navigation.ToWebView ->
-                        navController.navigate(
-                            Routes.HOME_BANNER_WEB_VIEW.homeBannerWebViewRoute(effect.url)
+                        navigator.navigate(
+                            navController = navController,
+                            route = Routes.HOME_BANNER_WEB_VIEW.homeBannerWebViewRoute(effect.url)
                         )
 
                     HomeContract.Effect.Navigation.ToNotification ->
