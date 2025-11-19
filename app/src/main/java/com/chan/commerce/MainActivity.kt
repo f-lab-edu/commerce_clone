@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +50,7 @@ import com.chan.navigation.Routes
 import com.chan.navigation.createLoginRoute
 import com.chan.product.navigation.ProductDetailDestination
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -62,6 +64,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navDestinationProviders: Set<@JvmSuppressWildcards NavDestinationProvider>
+
+    @Inject
+    lateinit var navigationManager: NavigationManager
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -93,6 +98,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
+            val coroutineScope = rememberCoroutineScope()
             val currentDestination = navController.currentBackStackEntryAsState().value
             val currentRoute = currentDestination?.destination?.route
             val isBottomBarVisible = remember { mutableStateOf(true) }
@@ -159,9 +165,17 @@ class MainActivity : ComponentActivity() {
                                 destination.route
                             }
 
-                            navController.navigate(target) {
-                                launchSingleTop = true
-                                if (destination.route == HomeDestination.route) popUpTo(0)
+                            coroutineScope.launch {
+                                navigationManager.navigate(
+                                    navController = navController,
+                                    route = target,
+                                    builder = {
+                                        launchSingleTop = true
+                                        if (destination.route == HomeDestination.route) {
+                                            popUpTo(0)
+                                        }
+                                    }
+                                )
                             }
                         },
                         navDestinations = allNavDestinations,
