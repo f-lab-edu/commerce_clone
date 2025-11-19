@@ -31,3 +31,9 @@ enum class Routes(val route: String) {
 fun createLoginRoute(redirect: String = ""): String {
     return "${Routes.LOGIN.route}?redirect=$redirect"
 }
+
+val routesRequiringAuth = setOf(
+    Routes.CART.route,
+    Routes.CART_POPUP.route,
+    Routes.MYPAGE.route
+)
