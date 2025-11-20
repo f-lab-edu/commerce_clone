@@ -44,4 +44,8 @@ interface CartRepository {
      * 상품 상태 전체 업데이트 (선택/해제)
      */
     suspend fun updateAllProductsSelected(isSelected: Boolean)
+
+    suspend fun clearCart()
+
+    suspend fun insertOrder()
 }

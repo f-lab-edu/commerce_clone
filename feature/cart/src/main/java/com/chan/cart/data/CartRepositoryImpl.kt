@@ -4,17 +4,23 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import com.chan.auth.domain.usecase.FlowCurrentUserIdUseCase
 import com.chan.auth.domain.usecase.GetCurrentUserIdUseCase
-import com.chan.database.datastore.CartDataStoreManager
 import com.chan.cart.data.mapper.toProductsVO
 import com.chan.cart.domain.CartRepository
 import com.chan.cart.proto.Cart
 import com.chan.cart.proto.CartItem
+import com.chan.database.dao.OrdersDao
 import com.chan.database.dao.ProductsDao
+import com.chan.database.datastore.CartDataStoreManager
+import com.chan.database.entity.order.OrderEntity
 import com.chan.domain.ProductsVO
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,8 +28,9 @@ import javax.inject.Singleton
 class CartRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val productsDao: ProductsDao,
+    private val ordersDao: OrdersDao,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val flowCurrentUserIdUseCase: FlowCurrentUserIdUseCase
+    private val flowCurrentUserIdUseCase: FlowCurrentUserIdUseCase,
 ) : CartRepository {
 
     private fun getCartStore(): DataStore<Cart> {
@@ -116,7 +123,8 @@ class CartRepositoryImpl @Inject constructor(
 
     override suspend fun decreaseProductQuantity(productId: String) {
         getCartStore().updateData { cart ->
-            val targetItem = cart.itemsList.find { it.productId == productId } ?: return@updateData cart
+            val targetItem =
+                cart.itemsList.find { it.productId == productId } ?: return@updateData cart
 
             val updatedItems = if (targetItem.quantity > 1) {
                 cart.itemsList.map {
@@ -139,6 +147,57 @@ class CartRepositoryImpl @Inject constructor(
                 it.toBuilder().setIsSelected(isSelected).build()
             }
         }
+    }
+
+    override suspend fun clearCart() {
+        getCartStore().updateData { cart ->
+            cart.toBuilder().clearItems().build()
+        }
+    }
+
+    override suspend fun insertOrder() {
+        try {
+            val currentCart = getCartStore().data.first()
+            if (currentCart.itemsList.isEmpty()) return
+
+            val orderItems = currentCart.itemsList.map {
+                OrderEntity.OrderItem(
+                    productId = it.productId,
+                    productName = it.productName,
+                    imageUrl = it.imageUrl,
+                    quantity = it.quantity,
+                    price = it.discountedPrice
+                )
+            }
+
+            val order = OrderEntity(
+                orderId = generateOrderId(),
+                orderData = todayDateString(),
+                totalPrice = orderItems.sumOf { it.price * it.quantity },
+                createdAt = System.currentTimeMillis(),
+                items = orderItems
+            )
+
+            ordersDao.insertOrder(order)
+            clearCart()
+        } catch (e: Exception) {
+            // Log or throw custom exception
+            throw RuntimeException("Failed to place order: ${e.message}")
+        }
+
+    }
+
+    private fun todayDateString(): String {
+        val formatter = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
+        return formatter.format(Date())
+    }
+
+
+    private fun generateOrderId(): String {
+        val timestamp = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
+            .format(Date())
+        val random = (1000..9999).random()
+        return "$timestamp$random"
     }
 
     private suspend fun updateCartItems(transform: (List<CartItem>) -> List<CartItem>) {

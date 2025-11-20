@@ -21,18 +21,21 @@ class CartContract {
         data class UpdateProductQuantity(val productId: String, val isAdd: Boolean) : Event()
         object OnAllSelected : Event()
         data class DeleteProduct(val productId: String) : Event()
+
+        object ConfirmPurchase : Event()
+        object ConfirmGift : Event()
     }
 
     data class State(
         val selectedTabIndex: Int = 0,
-        val tobBars : List<CartInTobBarModel> = emptyList(),
+        val tobBars: List<CartInTobBarModel> = emptyList(),
         val popupProductInfo: PopupProductInfoModel = PopupProductInfoModel.EMPTY,
         val cartInProducts: List<CartInProductsModel> = emptyList(),
-        val totalProductsCount : Int = 0,
-        val totalPrice : Int = 0,
-        val allSelected : Boolean = false,
+        val totalProductsCount: Int = 0,
+        val totalPrice: Int = 0,
+        val allSelected: Boolean = false,
         val loadingState: LoadingState = LoadingState.Idle,
-        override val isSessionCheckCompleted: Boolean = false
+        override val isSessionCheckCompleted: Boolean = false,
     ) : ViewState, SessionState
 
     sealed class Effect : ViewEffect {

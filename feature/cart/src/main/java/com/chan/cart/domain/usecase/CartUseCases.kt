@@ -11,7 +11,8 @@ data class CartUseCases @Inject constructor(
     val updateProductSelectedUseCase: UpdateProductSelectedUseCase,
     val updateAllProductSelectedUseCase: UpdateAllProductSelectedUseCase,
     val increaseProductUseCase: IncreaseProductUseCase,
-    val decreaseProductUseCase: DecreaseProductUseCase
+    val decreaseProductUseCase: DecreaseProductUseCase,
+    val insertOrderUseCase: InsertOrderUseCase
 )
 
 class ProductInfoUseCase @Inject constructor(
@@ -64,4 +65,12 @@ class DecreaseProductUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(productId: String) =
         cartRepository.decreaseProductQuantity(productId)
+}
+
+class InsertOrderUseCase @Inject constructor(
+    private val cartRepository: CartRepository
+) {
+    suspend operator fun invoke() {
+        cartRepository.insertOrder()
+    }
 }
