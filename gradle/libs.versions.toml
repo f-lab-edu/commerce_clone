@@ -34,6 +34,7 @@ firebaseBom = "33.3.0"
 googleServices = "4.4.1"
 arch-core-testing = "2.2.0"
 lifecycleViewmodelKtx = "2.6.2"
+foundationAndroid = "1.7.0"
 
 
 [libraries]
@@ -91,6 +92,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version =
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
