@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.chan.database.dao.CategoryDao
 import com.chan.database.dao.HomeBannerDao
+import com.chan.database.dao.OrdersDao
 import com.chan.database.dao.ProductDao
 import com.chan.database.dao.ProductDetailDao
 import com.chan.database.dao.ProductsDao
@@ -53,7 +54,7 @@ object DatabaseModule {
                 }
             }
         )
-            .addMigrations(MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19)
+            .addMigrations(MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20)
             .build()
     }
 
@@ -108,4 +109,8 @@ object DatabaseModule {
     @Provides
     fun provideProductsDao(db: AppDatabase): ProductsDao =
         db.productsDao()
+
+    @Provides
+    fun provideOrdersDao(db: AppDatabase): OrdersDao =
+        db.ordersDao()
 }

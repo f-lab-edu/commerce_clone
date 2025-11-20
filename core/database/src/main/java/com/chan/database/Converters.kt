@@ -2,6 +2,7 @@ package com.chan.database
 
 import androidx.room.TypeConverter
 import com.chan.database.entity.ProductEntity
+import com.chan.database.entity.order.OrderEntity.OrderItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -30,4 +31,13 @@ class Converters {
     fun fromStringToList(value: String): List<String> {
         return if (value.isEmpty()) emptyList() else value.split(",")
     }
+
+
+    @TypeConverter
+    fun fromList(items: List<OrderItem>): String =
+        Gson().toJson(items)
+
+    @TypeConverter
+    fun toList(json: String): List<OrderItem> =
+        Gson().fromJson(json, object : TypeToken<List<OrderItem>>() {}.type)
 }
