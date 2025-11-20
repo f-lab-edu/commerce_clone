@@ -47,6 +47,14 @@ class CartViewModel @Inject constructor(
             CartContract.Event.OnAllSelected -> updateAllSelected()
             is CartContract.Event.DeleteProduct -> deleteProduct(event.productId)
             CartContract.Event.CheckUserSession -> checkSessionStatus()
+            CartContract.Event.ConfirmGift -> {}
+            CartContract.Event.ConfirmPurchase -> { confirmPurchase() }
+        }
+    }
+
+    private fun confirmPurchase() {
+        viewModelScope.launch {
+            cartUseCases.insertOrderUseCase()
         }
     }
 

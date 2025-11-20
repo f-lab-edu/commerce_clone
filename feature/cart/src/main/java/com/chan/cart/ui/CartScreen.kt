@@ -41,19 +41,22 @@ import com.chan.cart.ui.composable.commonCartScreen
 @Composable
 fun CartScreen(
     state: CartContract.State,
-    onEvent: (CartContract.Event) -> Unit
+    onEvent: (CartContract.Event) -> Unit,
 ) {
     Scaffold(
         bottomBar = {
             if (state.cartInProducts.isNotEmpty()) {
                 CartBottomBar(
                     totalItemCount = state.totalProductsCount,
-                    totalPrice = state.totalPrice
+                    totalPrice = state.totalPrice,
+                    onPurchaseClick = { onEvent(CartContract.Event.ConfirmPurchase) }
                 )
             }
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+        Column(modifier = Modifier
+            .padding(padding)
+            .fillMaxSize()) {
             MainTopBar(
                 navigationIcon = {
                     IconButton(onClick = { }) {
@@ -97,7 +100,9 @@ fun CartScreen(
 
             if (state.cartInProducts.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize().background(White),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(White),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(text = stringResource(R.string.empty_cart_in))

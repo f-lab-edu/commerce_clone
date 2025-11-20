@@ -30,7 +30,11 @@ import com.chan.android.ui.theme.dividerColor
 import com.chan.cart.R
 
 @Composable
-fun CartBottomBar(totalItemCount: Int, totalPrice: Int) {
+fun CartBottomBar(
+    totalItemCount: Int,
+    totalPrice: Int,
+    onPurchaseClick: () -> Unit,
+) {
     val formattedTotalPrice = "%,d".format(totalPrice)
     Column(
         modifier = Modifier
@@ -58,7 +62,7 @@ fun CartBottomBar(totalItemCount: Int, totalPrice: Int) {
             horizontalArrangement = Arrangement.spacedBy(Spacing.spacing2)
         ) {
             OutlinedButton(
-                onClick = { },
+                onClick = { onPurchaseClick() },
                 border = BorderStroke(1.dp, dividerColor),
                 modifier = Modifier
                     .weight(1f)
