@@ -8,6 +8,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.chan.database.dao.CategoryDao
 import com.chan.database.dao.HomeBannerDao
+import com.chan.database.dao.OrdersDao
 import com.chan.database.dao.ProductDao
 import com.chan.database.dao.ProductDetailDao
 import com.chan.database.dao.ProductsDao
@@ -19,6 +20,7 @@ import com.chan.database.entity.ProductDetailEntity
 import com.chan.database.entity.ProductEntity
 import com.chan.database.entity.UserEntity
 import com.chan.database.entity.home.HomeBannerEntity
+import com.chan.database.entity.order.OrderEntity
 import com.chan.database.entity.search.SearchHistoryEntity
 
 val MIGRATION_13_14 = object : Migration(13, 14) {
@@ -122,10 +124,26 @@ val MIGRATION_18_19 = object : Migration(18, 19) {
     }
 }
 
+val MIGRATION_19_20 = object : Migration(19, 20) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS orders (
+                orderId TEXT NOT NULL PRIMARY KEY,
+                orderData TEXT NOT NULL,
+                totalPrice INTEGER NOT NULL,
+                createdAt INTEGER NOT NULL,
+                items TEXT NOT NULL
+            )
+            """.trimIndent()
+        )
+    }
+}
+
 
 @Database(
-    entities = [HomeBannerEntity::class, ProductEntity::class, ProductDetailEntity::class, UserEntity::class, SearchHistoryEntity::class, CommonProductEntity::class, CommonCategoryEntity::class],
-    version = 19,
+    entities = [HomeBannerEntity::class, ProductEntity::class, ProductDetailEntity::class, UserEntity::class, SearchHistoryEntity::class, CommonProductEntity::class, CommonCategoryEntity::class, OrderEntity::class],
+    version = 20,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 12, to = 13)
@@ -141,4 +159,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun searchHistoryDao(): SearchHistoryDao
     abstract fun categoryDao(): CategoryDao
     abstract fun productsDao(): ProductsDao
+    abstract fun ordersDao(): OrdersDao
 }
