@@ -55,16 +55,16 @@ fun CommonProductsCard(
     orientation: ProductCardOrientation = ProductCardOrientation.VERTICAL,
     showLikeButton: Boolean = true,
     showCartButton: Boolean = true,
-    onClick: (productId: String) -> Unit,
-    onLikeClick: (productId: String) -> Unit,
-    onCartClick: (productId: String) -> Unit
+    onClick: ((productId: String) -> Unit)? = null,
+    onLikeClick: ((productId: String) -> Unit)? = null,
+    onCartClick: ((productId: String) -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Card(
         modifier = modifier
             .clickable(
-                onClick = { onClick(product.productId) },
+                onClick = { onClick?.invoke(product.productId) },
                 indication = null,
                 interactionSource = interactionSource
             ),
@@ -75,7 +75,7 @@ fun CommonProductsCard(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp),
+                    .padding(Spacing.spacing2),
                 horizontalAlignment = Alignment.Start
             ) {
                 AsyncImage(
@@ -121,7 +121,7 @@ fun CommonProductsCard(
                 ) {
                     if (showLikeButton) {
                         IconButton(
-                            onClick = { onLikeClick(product.productId) },
+                            onClick = { onLikeClick?.invoke(product.productId) },
                         ) {
                             Icon(
                                 imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
@@ -132,7 +132,7 @@ fun CommonProductsCard(
                         }
                     }
                     if (showCartButton) {
-                        IconButton(onClick = { onCartClick(product.productId) }) {
+                        IconButton(onClick = { onCartClick?.invoke(product.productId) }) {
                             Icon(
                                 imageVector = Icons.Default.ShoppingCart,
                                 contentDescription = "cart",
@@ -144,7 +144,7 @@ fun CommonProductsCard(
             }
         } else {
             Row(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(Spacing.spacing2),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
@@ -171,32 +171,42 @@ fun CommonProductsCard(
 
                     // 할인 및 가격 정보
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = product.discountPercent,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Red,
-                            fontWeight = FontWeight.Bold
-                        )
+                        product.discountPercent?.let { discountPercent ->
+                            Text(
+                                text = discountPercent,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Red,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = product.discountPrice,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Bold
-                        )
+
+                        product.discountPrice?.let { discountPrice ->
+                            Text(
+                                text = discountPrice,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = product.originalPrice,
-                            style = MaterialTheme.typography.bodySmall,
-                            textDecoration = TextDecoration.LineThrough,
-                            color = Color.Gray
-                        )
+                        product.originalPrice?.let { originalPrice ->
+                            Text(
+                                text = originalPrice,
+                                style = MaterialTheme.typography.bodySmall,
+                                textDecoration = TextDecoration.LineThrough,
+                                color = Color.Gray
+                            )
+                        }
+
                     }
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (showLikeButton) {
-                        IconButton(onClick = { onLikeClick(product.productId) }) {
+                        IconButton(onClick = { onLikeClick?.invoke(product.productId) }) {
                             Icon(
                                 imageVector = if (isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                 contentDescription = "like",
@@ -206,7 +216,7 @@ fun CommonProductsCard(
                         }
                     }
                     if (showCartButton) {
-                        IconButton(onClick = { onCartClick(product.productId) }) {
+                        IconButton(onClick = { onCartClick?.invoke(product.productId) }) {
                             Icon(
                                 imageVector = Icons.Default.ShoppingCart,
                                 contentDescription = "cart",
@@ -222,27 +232,36 @@ fun CommonProductsCard(
 
 @Composable
 fun Price(price: ProductsModel) {
-    Text(
-        text = price.originalPrice,
-        fontSize = 10.sp,
-        color = Color.LightGray,
-        fontWeight = FontWeight.Medium,
-        style = TextStyle(textDecoration = TextDecoration.LineThrough)
-    )
+    price.originalPrice?.let { originalPrice ->
+        Text(
+            text = originalPrice,
+            fontSize = 10.sp,
+            color = Color.LightGray,
+            fontWeight = FontWeight.Medium,
+            style = TextStyle(textDecoration = TextDecoration.LineThrough)
+        )
+    }
+
     Row {
-        Text(
-            text = price.discountPercent,
-            fontSize = 12.sp,
-            color = Color.Red,
-            fontWeight = FontWeight.Bold
-        )
+        price.discountPercent?.let { discountPercent ->
+            Text(
+                text = discountPercent,
+                fontSize = 12.sp,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
         Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = price.discountPrice,
-            fontSize = 12.sp,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold
-        )
+        price.discountPrice?.let { discountPrice ->
+            Text(
+                text = discountPrice,
+                fontSize = 12.sp,
+                color = Color.Black,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
     }
 }
 
@@ -274,21 +293,24 @@ private fun TagChip(tagLabel: String) {
 
 @Composable
 fun Review(reviews: ProductsModel) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = Icons.Default.Star,
-            contentDescription = "star",
-            tint = Color.Gray,
-            modifier = Modifier.size(10.dp)
-        )
-        Spacer(modifier = Modifier.width(Spacing.spacing1))
-        Text(
-            text = reviews.reviewCount,
-            fontSize = 10.sp,
-            color = Color.LightGray,
-            fontWeight = FontWeight.Medium
-        )
+    reviews.reviewCount?.let { reviewCount ->
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = "star",
+                tint = Color.Gray,
+                modifier = Modifier.size(10.dp)
+            )
+            Spacer(modifier = Modifier.width(Spacing.spacing1))
+            Text(
+                text = reviewCount,
+                fontSize = 10.sp,
+                color = Color.LightGray,
+                fontWeight = FontWeight.Medium
+            )
+        }
     }
+
 }
